@@ -1,0 +1,107 @@
+# =========================
+# Node modules (both frontend & backend)
+# =========================
+node_modules/
+frontend/node_modules/
+backend/node_modules/
+
+# =========================
+# Environment variables (VERY IMPORTANT)
+# =========================
+.env
+frontend/.env
+backend/.env
+
+# =========================
+# Logs
+# =========================
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# =========================
+# Build folders
+# =========================
+build/
+dist/
+frontend/build/
+backend/build/
+
+# =========================
+# OS files
+# =========================
+.DS_Store
+Thumbs.db
+
+# =========================
+# IDE / Editor files
+# =========================
+.vscode/
+.idea/
+*.swp
+
+# =========================
+# Dependency directories (extra safety)
+# =========================
+.pnp/
+.pnp.js
+
+# =========================
+# Coverage / testing
+# =========================
+coverage/
+
+# =========================
+# Misc
+# =========================
+*.pid
+*.seed
+*.pid.lock
+
+# =========================
+# Optional: lock files (KEEP if needed)
+# =========================
+# package-lock.json
+# yarn.lock# Dependencies
+node_modules/
+
+# Environment variables
+.env
+.env.*
+!.env.example
+!.env.production
+!frontend/.env.production
+
+# Build outputs
+dist/
+build/
+/frontend/dist/
+
+# Logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+logs/
+*.log
+
+# OS-generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# IDEs and Editors
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# Misc
+coverage/
+.temp/
+.tmp/
