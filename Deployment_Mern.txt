@@ -1,0 +1,91 @@
+## Install Required Software on EC2
+sudo apt update
+sudo apt upgrade -y
+sudo apt install -y nodejs npm git nginx
+sudo npm install -g pm2
+
+Step 1 — Clone the repository
+
+Step 2 — Backend setup
+	cd backend
+	npm install
+	npm run dev
+
+	Verify it works:
+	curl http://localhost:5000/api/health
+	Start backend with PM2 (production process manager)
+		pm2 start server.js --name "project_name"
+		pm2 status
+		pm2 logs project_name --lines 20
+		pm2 save
+		pm2 startup
+
+Step 3 — Frontend setup
+	cd frontend
+	npm install
+	cp .env.example .env
+	VITE_API_URL=http://your_vm_ip/api //here while deploying don't put PORT No. in url
+	npm run dev
+
+	Build the Frontend
+	npm run build
+	ls dist/index.html // it must be present after build
+
+Step 4 -- Fix File Permissions for Nginx
+	sudo chmod 755 /home/azureuser
+	sudo chmod -R 755 /home/azureuser/project_folder_name_main/frontend/dist
+	
+	# Test Nginx can actually read the file
+		sudo -u www-data cat /home/azureuser/project_folder_name_main/frontend/dist/index.html
+
+step 5 -- Configure Nginx
+	sudo nano /etc/nginx/sites-available/name_of_your_project
+	
+server {
+    listen 80;
+    server_name <YOUR_EC2_PUBLIC_IP>;
+
+    # Serve React frontend static files
+    root /home/azureuser/project_folder_name_main/frontend/dist;
+    index index.html;
+
+    # React Router SPA fallback — all unknown routes serve index.html
+    location / {
+        try_files $uri $uri/ /index.html;
+    }
+
+    # Proxy all /api requests to Node.js backend on port 5000
+    location /api {
+        proxy_pass http://localhost:5000;
+        proxy_http_version 1.1;
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection 'upgrade';
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_cache_bypass $http_upgrade;
+    }
+}
+
+SAVE AND EXIT
+
+# Remove the default Nginx site to avoid conflicts
+sudo rm -f /etc/nginx/sites-enabled/default
+
+sudo ln -s /etc/nginx/sites-available/Project_name /etc/nginx/sites-enabled/
+
+# Test Nginx configuration for syntax errors
+sudo nginx -t
+
+# Reload Nginx to apply the new configuration
+sudo systemctl reload nginx
+
+# Enable Nginx to start automatically on server reboot
+sudo systemctl enable nginx
+
+# Verify Nginx is running
+sudo systemctl status nginx
+
+
+Check if its working
+Now open http://<YOUR_EC2_PUBLIC_IP>
