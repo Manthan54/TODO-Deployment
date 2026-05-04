@@ -6,13 +6,6 @@ frontend/node_modules/
 backend/node_modules/
 
 # =========================
-# Environment variables (VERY IMPORTANT)
-# =========================
-.env
-frontend/.env
-backend/.env
-
-# =========================
 # Logs
 # =========================
 logs
@@ -66,13 +59,6 @@ coverage/
 # package-lock.json
 # yarn.lock# Dependencies
 node_modules/
-
-# Environment variables
-.env
-.env.*
-!.env.example
-!.env.production
-!frontend/.env.production
 
 # Build outputs
 dist/
